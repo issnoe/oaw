@@ -150,12 +150,26 @@ export class Services implements OnInit, OnDestroy {
   readonly structuredData = signal<any>(null);
 
   ngOnInit() {
+    // Set default meta description for services pages
+    this.setDefaultMetadata();
+
     // Subscribe to route params to handle navigation changes
     this.routeSubscription = this.route.paramMap.subscribe(params => {
       const slugParam = params.get('slug');
       this.slug.set(slugParam);
       this.loadContent();
     });
+  }
+
+  private setDefaultMetadata() {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    // Set default meta description for services pages
+    const defaultDescription = 'Explore Oakwood Systems\' Microsoft services including Data & AI, Cloud Infrastructure, Application Innovation, High-Performance Computing, Modern Work, and Managed Services.';
+    this.metaService.updateTag({ name: 'description', content: defaultDescription });
+    this.titleService.setTitle('Services | Oakwood Systems');
   }
 
   ngOnDestroy() {

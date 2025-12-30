@@ -56,6 +56,8 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         if (data.videoUrls && data.videoUrls.length > 0) {
           this.videoUrls.set(data.videoUrls);
         }
+        this.updateMetadata(data);
+        this.updateStructuredData(data);
         this.loading.set(false);
       },
       error: (error) => {
