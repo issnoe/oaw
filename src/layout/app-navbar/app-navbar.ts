@@ -1,63 +1,73 @@
-import { Component, OnInit, OnDestroy, HostListener, inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, inject, PLATFORM_ID, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule, NgClass, NgIf, isPlatformBrowser } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { MicrosoftServices } from "./microsoft-services/microsoft-services";
+import { Industries } from "./industries/industries";
+import { Resources } from "./resources/resources";
+
+interface MenuItem {
+  label: string;
+  routerLink: string;
+  index: number | null;
+  hasDropdown: boolean;
+}
+
+interface Service {
+  title: string;
+  description: string;
+  route: string;
+  icon: string;
+}
+
+interface NavbarContent {
+  menuItems: MenuItem[];
+  services: Service[];
+}
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, CommonModule, NgClass],
+  imports: [RouterLink, CommonModule, NgClass, MicrosoftServices, Industries, Resources],
   templateUrl: './app-navbar.html',
 })
 export class AppNavbar implements OnInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly http = inject(HttpClient);
+
   isMobileMenuOpen = false;
   isScrolled = false;
   isServicesDropdownOpen = false;
   isIndustriesDropdownOpen = false;
   isResourcesDropdownOpen = false;
+  hoveredIndex = signal<number | null>(null);
 
-  services = [
-    {
-      title: 'Data & AI Solutions',
-      description: 'Unify, govern, and activate your data estate to deliver real AI outcomes.',
-      route: '/services/data-and-ai',
-      icon: 'data-ai'
-    },
-    {
-      title: 'Cloud & Infrastructure',
-      description: 'Modernize, secure, and optimize your cloud estate with Oakwood and Microsoft Azure',
-      route: '/services/cloud-and-infrastructure',
-      icon: 'cloud'
-    },
-    {
-      title: 'Application Innovation',
-      description: 'Ship faster, run safer, and scale efficiently with modern applications on Azure.',
-      route: '/services/application-innovation',
-      icon: 'app-innovation'
-    },
-    {
-      title: 'High-Performance Computing (HPC)',
-      description: 'Scale simulations, AI training, and PLM workloads with the power of Azure HPC.',
-      route: '/services/high-performance-computing',
-      icon: 'hpc'
-    },
-    {
-      title: 'Modern Work',
-      description: 'Boost productivity, protect data, and improve employee experience with Microsoft 365 and Copilot.',
-      route: '/services/modern-work',
-      icon: 'modern-work'
-    },
-    {
-      title: 'Managed Services',
-      description: 'Keep your Microsoft cloud running fast, secure, and cost effective with Oakwood.',
-      route: '/services/managed-services',
-      icon: 'managed-services'
-    }
-  ];
+  readonly menuItems = signal<MenuItem[]>([]);
+  readonly services = signal<Service[]>([]);
+  readonly loading = signal(true);
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.checkScrollPosition();
     }
+    this.loadNavbarContent();
+  }
+
+  private loadNavbarContent() {
+    this.loading.set(true);
+    this.http.get<NavbarContent>('/navbar-content.json').subscribe({
+      next: (data) => {
+        this.menuItems.set(data.menuItems);
+        this.services.set(data.services);
+        this.loading.set(false);
+      },
+      error: (error) => {
+        console.error('Error loading navbar content:', error);
+        // Fallback to empty arrays on error
+        this.menuItems.set([]);
+        this.services.set([]);
+        this.loading.set(false);
+      }
+    });
   }
 
   @HostListener('window:scroll')
@@ -125,6 +135,27 @@ export class AppNavbar implements OnInit, OnDestroy {
     this.isServicesDropdownOpen = false;
     this.isIndustriesDropdownOpen = false;
     this.isResourcesDropdownOpen = false;
+  }
+
+  public handleClickEvent(): void {
+    this.hoveredIndex.set(null);
+  }
+
+  public onMouseEnter(index: number): void {
+    this.hoveredIndex.set(index);
+    console.log('onMouseEnter', this.hoveredIndex());
+  }
+
+  public onNavMouseLeave(): void {
+    // Only hide the menu when leaving the entire nav area
+    this.hoveredIndex.set(null);
+    console.log('onNavMouseLeave', this.hoveredIndex());
+  }
+
+  public handleMouseEnter(item: { index: number | null; hasDropdown: boolean }): void {
+    if (item.hasDropdown && item.index !== null) {
+      this.onMouseEnter(item.index + 1);
+    }
   }
 
   ngOnDestroy() {

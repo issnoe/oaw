@@ -1,8 +1,425 @@
-<div class="min-h-screen py-12 sm:py-16 md:py-20">
-  <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-      Services: @if (slug) { {{ slug }} } @else { Services }
-    </h1>
-    <p class="text-lg text-gray-600">Service page content coming soon...</p>
+@if (loading()) {
+<div class="min-h-screen flex items-center justify-center">
+  <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+</div>
+}
+
+@if (!loading() && error()) {
+<div class="min-h-screen flex items-center justify-center">
+  <div class="text-center">
+    <h1 class="text-2xl font-bold text-gray-900 mb-4">Error</h1>
+    <p class="text-gray-600">{{ error() }}</p>
   </div>
 </div>
+}
+
+@if (!loading() && !error() && content()) {
+<!-- Structured Data for SEO -->
+@if (structuredData()) {
+<script type="application/ld+json" [innerHTML]="sanitizer.bypassSecurityTrustHtml(getStructuredDataJson())"></script>
+}
+
+<!-- Hero Section with Video Background -->
+@if (content()?.videoUrls && (content()?.videoUrls?.length ?? 0) > 0) {
+<app-video-hero [videoUrls]="content()?.videoUrls!" [title]="content()!.title" [description]="content()!.description"
+  [ctaPrimary]="content()!.cta.primary" [ctaSecondary]="content()!.cta.secondary">
+</app-video-hero>
+} @else {
+<!-- Fallback to Image Background if no videos -->
+<section class="relative min-h-screen w-full overflow-hidden" aria-label="Hero section">
+  <div class="absolute inset-0 z-0">
+    @if (content()!.backgroundImage) {
+    <img [src]="content()!.backgroundImage" [alt]="content()!.title + ' - Oakwood Systems service background'"
+      class="absolute inset-0 w-full h-full object-cover" loading="eager" />
+    }
+    <div class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm"></div>
+  </div>
+  <div class="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 h-screen flex items-center">
+    <div class="w-full max-w-2xl md:max-w-3xl">
+      <h1
+        class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-4 sm:mb-6 md:mb-8 font-sans">
+        {{ content()!.title }}
+      </h1>
+      <p
+        class="text-base sm:text-lg md:text-xl text-white mb-8 sm:mb-10 md:mb-12 max-w-xl md:max-w-2xl leading-relaxed font-sans">
+        {{ content()!.description }}
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
+        <a [routerLink]="content()!.cta.primary.link"
+          class="inline-block text-center font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-all duration-200 hover:opacity-90 hover:scale-105 font-sans text-white shadow-lg"
+          [style.background-color]="content()!.cta.primary.backgroundColor">
+          {{ content()!.cta.primary.text }}
+        </a>
+        <a [routerLink]="content()!.cta.secondary.link"
+          class="inline-block text-center font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-all duration-200 hover:bg-white/10 hover:scale-105 font-sans text-white border-2"
+          [style.border-color]="content()!.cta.secondary.borderColor">
+          {{ content()!.cta.secondary.text }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Main Description Section -->
+@if (content()?.mainDescription) {
+<section class="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24" aria-labelledby="main-description">
+  <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+    <div class="max-w-3xl mx-auto">
+      <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-900 font-normal leading-relaxed font-sans text-left"
+        id="main-description">
+        {{ content()?.mainDescription?.text }}
+      </p>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Service Areas Section -->
+@if (content()?.serviceAreas) {
+<section class="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24" aria-labelledby="service-areas-title">
+  <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+      <!-- Left Column: Service Areas Promotional Block -->
+      <div class="relative min-h-[500px] lg:min-h-[600px] rounded-lg overflow-hidden">
+        <!-- Background Image -->
+        <img [src]="content()!.serviceAreas!.backgroundImage"
+          [alt]="content()!.serviceAreas!.title + ' - Service areas background image'"
+          class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+        <!-- Dark Overlay -->
+        <div class="absolute inset-0 bg-slate-900/40"></div>
+        <!-- Content -->
+        <div class="relative z-10 h-full flex flex-col justify-end p-6 sm:p-8 md:p-10 lg:p-12">
+          <p class="text-sm sm:text-base font-semibold uppercase tracking-wider text-white mb-2 sm:mb-3 font-sans">
+            {{ content()!.serviceAreas!.tagline }}
+          </p>
+          <h2 id="service-areas-title"
+            class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight font-sans">
+            {{ content()!.serviceAreas!.title }}
+          </h2>
+          <p class="text-base sm:text-lg md:text-xl text-white leading-relaxed font-sans max-w-xl">
+            {{ content()!.serviceAreas!.description }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Column: Service Area Cards -->
+      <div class="flex flex-col gap-6 sm:gap-8">
+        @for (area of content()!.serviceAreas!.serviceAreas; track area.title) {
+        <div
+          class="bg-white border border-gray-200 rounded-lg p-6 sm:p-8 shadow-md hover:shadow-lg transition-shadow duration-300">
+          <!-- Icon and Badges Row -->
+          <div class="flex items-start justify-between mb-4 sm:mb-6">
+            <!-- Icon -->
+            <div class="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
+              <img [src]="area.icon" [alt]="area.title + ' service icon'" class="w-full h-auto object-contain"
+                loading="lazy" />
+            </div>
+            <!-- Badges -->
+            <div class="flex flex-wrap gap-2">
+              @for (badge of area.badges; track badge) {
+              <span class="px-3 py-1 text-xs sm:text-sm font-medium text-white rounded bg-blue-600 font-sans">
+                {{ badge }}
+              </span>
+              }
+            </div>
+          </div>
+
+          <!-- Title -->
+          <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3 font-sans">
+            {{ area.title }}
+          </h3>
+
+          <!-- Subtitle -->
+          <p class="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed font-sans">
+            {{ area.subtitle }}
+          </p>
+
+          <!-- Features List -->
+          <ul class="space-y-2 sm:space-y-3">
+            @for (feature of area.features; track feature) {
+            <li class="flex items-start text-sm sm:text-base text-gray-600 leading-relaxed font-sans">
+              <span class="text-blue-600 mr-2 mt-1">•</span>
+              <span>{{ feature }}</span>
+            </li>
+            }
+          </ul>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Solution Accelerators Section -->
+@if (content()?.solutionAccelerators) {
+<section class="w-full" aria-labelledby="solution-accelerators-title">
+  <!-- Hero Banner -->
+  <div class="relative min-h-[400px] sm:min-h-[500px] md:min-h-[600px] w-full overflow-hidden">
+    <!-- Background Image/Video -->
+    <div class="absolute inset-0 z-0">
+      @if (content()?.solutionAccelerators?.videoUrls && (content()?.solutionAccelerators?.videoUrls?.length ?? 0) > 0)
+      {
+      <video class="absolute inset-0 w-full h-full object-cover" autoplay muted playsinline loop
+        aria-label="Solution accelerators background video">
+        <source [src]="content()?.solutionAccelerators?.videoUrls?.[0] || ''" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      } @else if (content()?.solutionAccelerators?.backgroundImage) {
+      <img [src]="content()?.solutionAccelerators?.backgroundImage || ''"
+        [alt]="(content()?.solutionAccelerators?.title || 'Solution accelerators') + ' background image'"
+        class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+      }
+      <div class="absolute inset-0 bg-slate-900/70"></div>
+    </div>
+
+    <!-- Content -->
+    <div
+      class="relative z-10 container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 h-full flex items-end pb-12 sm:pb-16 md:pb-20">
+      <div class="w-full max-w-3xl md:max-w-4xl">
+        <h2 id="solution-accelerators-title"
+          class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4 sm:mb-6 font-sans">
+          {{ content()?.solutionAccelerators?.title }}
+        </h2>
+        <p class="text-base sm:text-lg md:text-xl text-white leading-relaxed font-sans max-w-2xl md:max-w-3xl">
+          {{ content()?.solutionAccelerators?.description }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards Grid -->
+  <div class="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24">
+    <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-10">
+        @for (card of content()?.solutionAccelerators?.cards; track card.title) {
+        <div class="flex flex-col">
+          <!-- Icon -->
+          <div class="mb-4 sm:mb-6">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
+              <img [src]="card.icon" [alt]="card.title + ' solution accelerator icon'"
+                class="w-full h-auto object-contain" loading="lazy" />
+            </div>
+          </div>
+
+          <!-- Title -->
+          <h3 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 font-sans">
+            {{ card.title }}
+          </h3>
+
+          <!-- Description -->
+          <p class="text-sm sm:text-base text-gray-600 leading-relaxed font-sans">
+            {{ card.description }}
+          </p>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Featured Case Study Section -->
+@if (content()?.featuredCaseStudy) {
+<section class="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24" aria-labelledby="case-study-title">
+  <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+      <!-- Left Column: Image -->
+      <div class="relative w-full h-full min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] rounded-lg overflow-hidden">
+        <img [src]="content()?.featuredCaseStudy?.imageSrc"
+          [alt]="(content()?.featuredCaseStudy?.title || 'Case study') + ' - Featured case study image'"
+          class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+      </div>
+
+      <!-- Right Column: Content -->
+      <div class="relative flex flex-col justify-center">
+        <!-- Vertical Blue Line -->
+        <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-400 to-blue-600 -ml-4 sm:-ml-6"></div>
+
+        <!-- Featured Label -->
+        <p class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-blue-500 mb-4 sm:mb-6 font-sans">
+          {{ content()?.featuredCaseStudy?.featuredLabel }}
+        </p>
+
+        <!-- Category Tag -->
+        <div class="mb-4 sm:mb-6">
+          <span
+            class="inline-block px-4 py-2 bg-blue-600 text-white text-sm sm:text-base font-medium rounded-full font-sans">
+            {{ content()?.featuredCaseStudy?.categoryTag }}
+          </span>
+        </div>
+
+        <!-- Title -->
+        <h2 id="case-study-title"
+          class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight font-sans">
+          {{ content()?.featuredCaseStudy?.title }}
+        </h2>
+
+        <!-- Description -->
+        <p class="text-base sm:text-lg text-gray-700 mb-8 sm:mb-10 leading-relaxed font-sans">
+          {{ content()?.featuredCaseStudy?.description }}
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center">
+          <!-- Primary CTA Button -->
+          <a [routerLink]="content()?.featuredCaseStudy?.primaryCta?.link"
+            class="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 font-sans">
+            {{ content()?.featuredCaseStudy?.primaryCta?.text }}
+          </a>
+
+          <!-- Secondary CTA Link -->
+          <a [routerLink]="content()?.featuredCaseStudy?.secondaryCta?.link"
+            class="inline-flex items-center text-base sm:text-lg text-gray-900 hover:text-blue-600 font-medium transition-colors duration-200 font-sans">
+            {{ content()?.featuredCaseStudy?.secondaryCta?.text }}
+            <span class="ml-2">></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Trusted Partners Section -->
+@if (content()?.trustedPartners) {
+<section class="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24" aria-labelledby="trusted-partners-title">
+  <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+    <!-- Heading -->
+    <h2 id="trusted-partners-title"
+      class="text-2xl sm:text-3xl md:text-4xl font-medium text-gray-700 text-center mb-8 sm:mb-12 font-sans">
+      {{ content()?.trustedPartners?.title }}
+    </h2>
+
+    <!-- Logo Carousel -->
+    <div class="relative">
+      <!-- Left Arrow -->
+      <button (click)="scrollLogos('left')"
+        class="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center transition-colors duration-200 shadow-md"
+        aria-label="Scroll logos left">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <!-- Logo Container -->
+      <div #logoCarousel
+        class="flex items-center gap-8 sm:gap-12 md:gap-16 overflow-x-auto scrollbar-hide px-12 sm:px-16 md:px-20"
+        style="scrollbar-width: none; -ms-overflow-style: none;">
+        @for (partner of content()?.trustedPartners?.partners; track partner.name) {
+        <div class="flex-shrink-0 flex items-center justify-center h-16 sm:h-20 md:h-24">
+          <img [src]="partner.logo" [alt]="partner.alt || partner.name + ' logo'"
+            class="max-h-full max-w-[150px] sm:max-w-[180px] md:max-w-[200px] object-contain opacity-70 hover:opacity-100 transition-opacity duration-200"
+            loading="lazy" />
+        </div>
+        }
+      </div>
+
+      <!-- Right Arrow -->
+      <button (click)="scrollLogos('right')"
+        class="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center transition-colors duration-200 shadow-md"
+        aria-label="Scroll logos right">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Why Oakwood Section -->
+@if (content()?.whyOakwood) {
+<section class="w-full bg-slate-50 py-12 sm:py-16 md:py-20 lg:py-24" aria-labelledby="why-oakwood-title">
+  <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+    <!-- Top Introductory Section -->
+    <div class="text-center mb-12 sm:mb-16 md:mb-20">
+      <p class="text-sm sm:text-base font-semibold uppercase tracking-wider text-blue-600 mb-3 sm:mb-4 font-sans">
+        {{ content()?.whyOakwood?.tagline }}
+      </p>
+      <h2 id="why-oakwood-title"
+        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight font-sans">
+        {{ content()?.whyOakwood?.title }}
+      </h2>
+      <p class="text-base sm:text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed font-sans">
+        {{ content()?.whyOakwood?.description }}
+      </p>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+      <!-- Left Column: Image -->
+      <div class="relative w-full h-full min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] rounded-lg overflow-hidden">
+        <img [src]="content()?.whyOakwood?.imageSrc"
+          [alt]="(content()?.whyOakwood?.title || 'Why Oakwood') + ' - Team collaboration image'"
+          class="absolute inset-0 w-full h-full object-cover rounded-lg" loading="lazy" />
+      </div>
+
+      <!-- Right Column: Feature Cards Grid -->
+      <div class="flex flex-col">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+          @for (feature of content()?.whyOakwood?.features; track feature.title) {
+          <div class="bg-white rounded-lg p-6 sm:p-8 shadow-md hover:shadow-lg transition-shadow duration-300">
+            <!-- Icon -->
+            <div class="mb-4 sm:mb-6">
+              <div class="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
+                <img [src]="feature.icon" [alt]="feature.title + ' feature icon'" class="w-full h-auto object-contain"
+                  loading="lazy" />
+              </div>
+            </div>
+
+            <!-- Title -->
+            <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 font-sans">
+              {{ feature.title }}
+            </h3>
+
+            <!-- Description -->
+            <p class="text-sm sm:text-base text-gray-600 leading-relaxed font-sans">
+              {{ feature.description }}
+            </p>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- CTA Section -->
+@if (content()?.ctaSection) {
+<section class="w-full bg-gradient-to-r from-blue-50 via-white to-green-50 py-16 sm:py-20 md:py-24 lg:py-32"
+  aria-labelledby="cta-headline">
+  <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+    <div class="max-w-4xl mx-auto text-center">
+      <!-- Headline -->
+      <h2 id="cta-headline"
+        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight font-sans">
+        {{ content()?.ctaSection?.headline }}
+      </h2>
+
+      <!-- Sub-headline -->
+      <p class="text-base sm:text-lg md:text-xl text-gray-700 mb-8 sm:mb-10 md:mb-12 leading-relaxed font-sans">
+        {{ content()?.ctaSection?.subheadline }}
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
+        <!-- Primary Button -->
+        <a [routerLink]="content()?.ctaSection?.primaryCta?.link"
+          class="inline-block px-6 sm:px-8 md:px-10 py-3 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 font-sans shadow-md hover:shadow-lg">
+          {{ content()?.ctaSection?.primaryCta?.text }}
+        </a>
+
+        <!-- Secondary Button -->
+        <a [routerLink]="content()?.ctaSection?.secondaryCta?.link"
+          class="inline-block px-6 sm:px-8 md:px-10 py-3 sm:py-4 bg-white hover:bg-gray-50 text-gray-900 font-medium rounded-lg border-2 border-gray-300 hover:border-gray-400 transition-all duration-200 font-sans shadow-sm hover:shadow-md">
+          {{ content()?.ctaSection?.secondaryCta?.text }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+}
+}

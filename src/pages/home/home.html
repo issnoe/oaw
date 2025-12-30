@@ -5,13 +5,19 @@
 }
 
 @if (!loading() && content()) {
+<!-- Structured Data for SEO -->
+@if (structuredData()) {
+<script type="application/ld+json" [innerHTML]="sanitizer.bypassSecurityTrustHtml(getStructuredDataJson())"></script>
+}
+
 @for (section of content()!.sections; track section.type) {
 @switch (section.type) {
 @case ('hero') {
 <!-- Hero Section -->
-<section class="relative min-h-screen w-full overflow-hidden">
+<section class="relative min-h-screen w-full overflow-hidden" aria-label="Hero section">
   <div class="absolute inset-0 z-0">
-    <video class="absolute inset-0 w-full h-full object-cover" autoplay muted playsinline preload="auto" #videoElement>
+    <video class="absolute inset-0 w-full h-full object-cover" autoplay muted playsinline preload="auto" #videoElement
+      aria-label="Hero background video">
       Your browser does not support the video tag.
     </video>
     <div class="absolute inset-0 bg-slate-900/70"></div>
@@ -44,13 +50,14 @@
 
 @case ('services') {
 <!-- Services Section -->
-<section class="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24">
+<section class="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24" aria-labelledby="services-title">
   <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
     <div class="text-center mb-10 sm:mb-12 md:mb-16">
       <p class="text-sm sm:text-base font-semibold uppercase tracking-wider text-blue-600 mb-4 sm:mb-6">
         {{ section.label }}
       </p>
-      <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
+      <h2 id="services-title"
+        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
         {{ section.title }}
       </h2>
       <p class="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
@@ -61,13 +68,14 @@
       @for (service of section.services; track service.id) {
       <div class="bg-white border border-gray-200 rounded-lg p-6 sm:p-8 hover:shadow-lg transition-shadow duration-300">
         <div class="mb-4 sm:mb-6">
-          <svg class="w-10 h-10 sm:w-12 sm:h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 4h2v2H6V4zm10 0h2v2h-2V4z" />
-            <rect x="4" y="12" width="3" height="6" fill="currentColor" />
-            <rect x="9" y="9" width="3" height="9" fill="currentColor" />
-            <rect x="14" y="6" width="3" height="12" fill="currentColor" />
-          </svg>
+          <!-- Icon Container (Left) -->
+          <div class="">
+            <div
+              class="w-20 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 flex items-start justify-center relative">
+              <img [src]="service.icon" [alt]="service.title + ' service icon'" class=" w-20 h-auto object-cover"
+                loading="lazy" />
+            </div>
+          </div>
         </div>
         <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
           {{ service.title }}
@@ -88,12 +96,13 @@
 
 @case ('featuredCaseStudy') {
 <!-- Featured Case Study Section -->
-<section class="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24">
+<section class="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24" aria-labelledby="case-study-title">
   <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
       <div class="order-2 lg:order-1">
         <div class="relative w-full aspect-[4/3] rounded-lg overflow-hidden">
-          <img [src]="section.image.url" [alt]="section.image.alt" class="w-full h-full object-cover" />
+          <img [src]="section.image.url" [alt]="section.image.alt || section.title + ' - Featured case study image'"
+            class="w-full h-full object-cover" loading="lazy" />
         </div>
       </div>
       <div class="order-1 lg:order-2 relative">
@@ -108,7 +117,8 @@
             class="inline-block text-xs sm:text-sm font-medium text-white bg-blue-400 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full mb-4 sm:mb-6">
             {{ section.tag }}
           </span>
-          <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
+          <h2 id="case-study-title"
+            class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
             {{ section.title }}
           </h2>
           <p class="text-base sm:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed" [innerHTML]="section.description">
@@ -133,9 +143,10 @@
 
 @case ('trustedBy') {
 <!-- Trusted by Industry Leaders Section -->
-<section class="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24">
+<section class="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24" aria-labelledby="trusted-by-title">
   <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 text-center mb-8 sm:mb-12 md:mb-16">
+    <h2 id="trusted-by-title"
+      class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 text-center mb-8 sm:mb-12 md:mb-16">
       {{ section.title }}
     </h2>
     <div class="relative">
@@ -210,10 +221,11 @@
 @case ('structuredEngagements') {
 <!-- Structured Engagements Section -->
 <section
-  class="w-full bg-gradient-to-b from-slate-900 via-blue-900 to-slate-900 py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden">
+  class="w-full bg-gradient-to-b from-slate-900 via-blue-900 to-slate-900 py-12 sm:py-16 md:py-20 lg:py-24 relative overflow-hidden"
+  aria-labelledby="structured-engagements-title">
   <div class="absolute inset-0 opacity-20">
     <div class="absolute top-0 left-0 w-full h-full">
-      <svg class="w-full h-full" viewBox="0 0 1200 600" preserveAspectRatio="none">
+      <svg class="w-full h-full" viewBox="0 0 1200 600" preserveAspectRatio="none" aria-hidden="true">
         <path d="M0,300 Q300,200 600,300 T1200,300" stroke="rgba(59, 130, 246, 0.3)" fill="none" stroke-width="2" />
         <path d="M0,400 Q400,300 800,400 T1200,400" stroke="rgba(59, 130, 246, 0.2)" fill="none" stroke-width="2" />
       </svg>
@@ -224,7 +236,8 @@
       <p class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-gray-400 mb-3 sm:mb-4">
         {{ section.label }}
       </p>
-      <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 sm:mb-8 md:mb-10 leading-tight">
+      <h2 id="structured-engagements-title"
+        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 sm:mb-8 md:mb-10 leading-tight">
         {{ section.title }}
       </h2>
       <div class="flex flex-wrap justify-center gap-4 sm:gap-6 mb-8 sm:mb-10 md:mb-12">
@@ -292,11 +305,11 @@
 
 @case ('microsoftPartner') {
 <!-- Certified Microsoft Solutions Partner Section -->
-<section class="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24">
+<section class="w-full bg-white py-12 sm:py-16 md:py-20 lg:py-24" aria-labelledby="microsoft-partner-title">
   <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
     <div class="max-w-6xl mx-auto">
       <div class="mb-8 sm:mb-10 md:mb-12">
-        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
+        <h2 id="microsoft-partner-title" class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
           <span class="text-blue-400">{{ section.title.line1 }}</span><br />
           <span class="text-blue-600">{{ section.title.line2 }}</span>
         </h2>
@@ -334,13 +347,14 @@
 
 @case ('latestInsights') {
 <!-- Latest Insights Section -->
-<section class="w-full bg-slate-50 py-12 sm:py-16 md:py-20 lg:py-24">
+<section class="w-full bg-slate-50 py-12 sm:py-16 md:py-20 lg:py-24" aria-labelledby="latest-insights-title">
   <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
     <div class="text-center md:text-left mb-10 sm:mb-12 md:mb-16">
       <p class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-blue-600 mb-3 sm:mb-4">
         {{ section.label }}
       </p>
-      <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
+      <h2 id="latest-insights-title"
+        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
         {{ section.title }}
       </h2>
       <p class="text-base sm:text-lg text-gray-700 max-w-3xl mx-auto md:mx-0 leading-relaxed">
@@ -352,7 +366,8 @@
       <div
         class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
         <div class="relative w-full h-48 sm:h-56 overflow-hidden">
-          <img [src]="article.image.url" [alt]="article.image.alt" class="w-full h-full object-cover" />
+          <img [src]="article.image.url" [alt]="article.image.alt || article.title + ' article image'"
+            class="w-full h-full object-cover" loading="lazy" />
         </div>
         <div class="p-5 sm:p-6 flex flex-col flex-grow">
           <div class="flex items-center justify-between mb-4">
@@ -387,119 +402,7 @@
 </section>
 }
 
-@case ('footer') {
-<!-- Footer Section -->
-<footer class="w-full bg-slate-900 py-12 sm:py-16 md:py-20">
-  <div class="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-10 md:gap-12 mb-8 sm:mb-10 md:mb-12">
-      <div class="lg:col-span-1">
-        <div class="flex items-center gap-2 mb-6 sm:mb-8">
-          <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 rounded-full flex items-center justify-center">
-            <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
-            </svg>
-          </div>
-          <span class="text-white text-xl sm:text-2xl font-bold">{{ section.logo.text }}</span>
-        </div>
-        <h3 class="text-white font-bold text-base sm:text-lg mb-4 sm:mb-6">{{ section.contact.heading }}</h3>
-        <div class="space-y-3 mb-6 sm:mb-8">
-          <a [href]="section.contact.phone.link"
-            class="block text-white underline hover:text-blue-300 transition-colors duration-200">
-            {{ section.contact.phone.text }}
-          </a>
-          <a [href]="section.contact.email.link"
-            class="block text-white underline hover:text-blue-300 transition-colors duration-200">
-            {{ section.contact.email.text }}
-          </a>
-        </div>
-        <div class="flex items-center gap-3">
-          @for (social of section.socialMedia; track social.name) {
-          <a [href]="social.link" [attr.aria-label]="social.name" [ngClass]="{
-                        'w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded flex items-center justify-center hover:bg-blue-700 transition-colors duration-200': social.icon === 'linkedin' || social.icon === 'facebook',
-                        'w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 rounded flex items-center justify-center hover:bg-gray-700 transition-colors duration-200': social.icon === 'twitter',
-                        'w-8 h-8 sm:w-10 sm:h-10 bg-red-600 rounded flex items-center justify-center hover:bg-red-700 transition-colors duration-200': social.icon === 'youtube'
-                      }">
-            @if (social.icon === 'linkedin') {
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path
-                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-            </svg>
-            } @else if (social.icon === 'twitter') {
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path
-                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg>
-            } @else if (social.icon === 'facebook') {
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path
-                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-            </svg>
-            } @else if (social.icon === 'youtube') {
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path
-                d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-            </svg>
-            }
-          </a>
-          }
-        </div>
-      </div>
-      <div>
-        <h3 class="text-white font-bold text-base sm:text-lg mb-4 sm:mb-6">Services</h3>
-        <ul class="space-y-3">
-          @for (link of section.links.services; track link.text) {
-          <li><a [routerLink]="link.routerLink" class="text-white hover:text-blue-300 transition-colors duration-200">{{
-              link.text }}</a></li>
-          }
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-white font-bold text-base sm:text-lg mb-4 sm:mb-6">Industries</h3>
-        <ul class="space-y-3">
-          @for (link of section.links.industries; track link.text) {
-          <li><a [routerLink]="link.routerLink" class="text-white hover:text-blue-300 transition-colors duration-200">{{
-              link.text }}</a></li>
-          }
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-white font-bold text-base sm:text-lg mb-4 sm:mb-6">Resources</h3>
-        <ul class="space-y-3">
-          @for (link of section.links.resources; track link.text) {
-          <li><a [routerLink]="link.routerLink" class="text-white hover:text-blue-300 transition-colors duration-200">{{
-              link.text }}</a></li>
-          }
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-white font-bold text-base sm:text-lg mb-4 sm:mb-6">Company</h3>
-        <ul class="space-y-3">
-          @for (link of section.links.company; track link.text) {
-          <li><a [routerLink]="link.routerLink" class="text-white hover:text-blue-300 transition-colors duration-200">{{
-              link.text }}</a></li>
-          }
-        </ul>
-      </div>
-    </div>
-    <div class="border-t border-gray-700 pt-6 sm:pt-8">
-      <div class="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6">
-        <p class="text-white text-sm sm:text-base text-center sm:text-left">
-          {{ section.copyright }}
-        </p>
-        <div class="flex flex-wrap items-center justify-center sm:justify-end gap-4 sm:gap-6">
-          @for (policy of section.policies; track policy.text) {
-          <a [href]="policy.link"
-            class="text-white text-sm sm:text-base underline hover:text-blue-300 transition-colors duration-200">
-            {{ policy.text }}
-          </a>
-          }
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
-}
+
 }
 }
 }

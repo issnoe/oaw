@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, computed, ElementRef, inject, OnDestroy, OnInit, PLATFORM_ID, signal, ViewChild } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule, NgClass, isPlatformBrowser } from '@angular/common';
+import { Title, Meta, DomSanitizer } from '@angular/platform-browser';
 import { Apollo, gql } from 'apollo-angular';
 
 interface HomeContent {
@@ -12,7 +12,7 @@ interface HomeContent {
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, CommonModule, NgClass],
+  imports: [CommonModule, NgClass],
   templateUrl: './home.html',
   styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,8 +32,12 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
   private readonly apollo = inject(Apollo);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly titleService = inject(Title);
+  private readonly metaService = inject(Meta);
+  readonly sanitizer = inject(DomSanitizer);
   readonly posts = signal<any>(null);
   readonly error = signal<any>(null);
+  readonly structuredData = signal<any>(null);
 
   constructor(private http: HttpClient) { }
 
@@ -46,6 +50,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     // The proxy endpoint is defined in server.ts and only works in SSR mode
     // Fallback to local file on error (e.g., during dev with ng serve)
     this.http.get<HomeContent>('/api/home-content').subscribe({
+      //this.http.get<HomeContent>('/home-content.json').subscribe({
       next: (data) => {
         this.content.set(data);
         if (data.videoUrls && data.videoUrls.length > 0) {
@@ -63,6 +68,8 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
             if (data.videoUrls && data.videoUrls.length > 0) {
               this.videoUrls.set(data.videoUrls);
             }
+            this.updateMetadata(data);
+            this.updateStructuredData(data);
             this.loading.set(false);
           },
           error: (fallbackError) => {
@@ -182,5 +189,77 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
   getSection(type: string) {
     return this.content()?.sections.find(s => s.type === type);
+  }
+
+  private updateMetadata(content: HomeContent) {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    // Get hero section for title and description
+    const heroSection = content.sections?.find(s => s.type === 'hero');
+    const pageTitle = heroSection?.title
+      ? `${heroSection.title} | Oakwood Systems`
+      : 'Oakwood Systems - Microsoft Solutions Partner';
+
+    this.titleService.setTitle(pageTitle);
+
+    // Update meta description
+    const description = heroSection?.description ||
+      'Oakwood Systems is a certified Microsoft Solutions Partner specializing in Data & AI, Cloud Infrastructure, Application Innovation, and Modern Work solutions.';
+    this.metaService.updateTag({ name: 'description', content: description });
+
+    // Open Graph tags
+    this.metaService.updateTag({ property: 'og:title', content: heroSection?.title || 'Oakwood Systems' });
+    this.metaService.updateTag({ property: 'og:description', content: description });
+    this.metaService.updateTag({ property: 'og:type', content: 'website' });
+    this.metaService.updateTag({ property: 'og:url', content: 'https://oakwoodsys.com' });
+    if (content.videoUrls && content.videoUrls.length > 0) {
+      // Use first video thumbnail or a default image
+      this.metaService.updateTag({ property: 'og:image', content: 'https://oakwoodsys.com/og-image.jpg' });
+    }
+
+    // Twitter Card tags
+    this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+    this.metaService.updateTag({ name: 'twitter:title', content: heroSection?.title || 'Oakwood Systems' });
+    this.metaService.updateTag({ name: 'twitter:description', content: description });
+
+    // Canonical URL
+    let linkTag = document.querySelector('link[rel="canonical"]');
+    if (!linkTag) {
+      linkTag = document.createElement('link');
+      linkTag.setAttribute('rel', 'canonical');
+      document.head.appendChild(linkTag);
+    }
+    linkTag.setAttribute('href', 'https://oakwoodsys.com');
+  }
+
+  private updateStructuredData(content: HomeContent) {
+    const heroSection = content.sections?.find(s => s.type === 'hero');
+    const servicesSection = content.sections?.find(s => s.type === 'services');
+
+    const structuredDataObj = {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      'name': 'Oakwood Systems',
+      'url': 'https://oakwoodsys.com',
+      'description': heroSection?.description || 'Microsoft Solutions Partner',
+      'logo': 'https://oakwoodsys.com/logo.png',
+      'sameAs': [
+        // Add social media links if available
+      ],
+      'contactPoint': {
+        '@type': 'ContactPoint',
+        'contactType': 'Customer Service',
+        'url': 'https://oakwoodsys.com/contact-us'
+      }
+    };
+
+    this.structuredData.set(structuredDataObj);
+  }
+
+  getStructuredDataJson(): string {
+    const data = this.structuredData();
+    return data ? JSON.stringify(data) : '';
   }
 }

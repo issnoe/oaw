@@ -28,43 +28,49 @@
           "id": 1,
           "title": "Data & AI Services",
           "description": "Unify, govern, and activate your data estate to deliver real AI outcomes.",
-          "link": "#",
-          "linkText": "Explore"
+          "link": "/services/data-and-ai",
+          "linkText": "Explore",
+          "icon": "/assets/graph.png"
         },
         {
           "id": 2,
           "title": "Cloud & Infrastructure",
           "description": "Modernize, secure, and optimize your cloud estate with Oakwood and Microsoft Azure",
-          "link": "#",
-          "linkText": "Explore"
+          "link": "/services/cloud-and-infrastructure",
+          "linkText": "Explore",
+          "icon": "/assets/cloud.png"
         },
         {
           "id": 3,
           "title": "Application Innovation",
           "description": "Ship faster, run safer, and scale efficiently with modern applications on Azure.",
-          "link": "#",
-          "linkText": "Explore"
+          "link": "/services/application-innovation",
+          "linkText": "Explore",
+          "icon": "/assets/app-innovation.png"
         },
         {
           "id": 4,
           "title": "High-Performance (HPC)",
           "description": "Scale simulations, AI training, and PLM workloads with the power of Azure (HPC).",
-          "link": "#",
-          "linkText": "Explore"
+          "link": "/services/high-performance-computing",
+          "linkText": "Explore",
+          "icon": "/assets/hpc.png"
         },
         {
           "id": 5,
           "title": "Modern Work",
           "description": "Boost productivity, protect data, and improve employee experience with Microsoft 365 and Copilot.",
-          "link": "#",
-          "linkText": "Explore"
+          "link": "/services/modern-work",
+          "linkText": "Explore",
+          "icon": "/assets/modern-work.png"
         },
         {
           "id": 6,
           "title": "Managed Services",
           "description": "Unify, govern, and activate your data estate to deliver real AI outcomes.",
-          "link": "#",
-          "linkText": "Explore"
+          "link": "/services/managed-services",
+          "linkText": "Explore",
+          "icon": "/assets/managed-services.png"
         }
       ]
     },

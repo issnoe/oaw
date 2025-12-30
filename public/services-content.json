@@ -1,0 +1,325 @@
+{
+  "services": {
+    "data-and-ai": {
+      "slug": "data-and-ai",
+      "title": "Data & AI",
+      "description": "Unify, govern, and activate your data estate to deliver real AI outcomes.",
+      "backgroundImage": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1920&q=80",
+      "videoUrls": [
+        "https://oakwoodsys.com/wp-content/uploads/2025/12/home.mp4",
+        "https://oakwoodsys.com/wp-content/uploads/2025/12/1.mp4",
+        "https://oakwoodsys.com/wp-content/uploads/2025/12/2.mp4",
+        "https://oakwoodsys.com/wp-content/uploads/2025/12/4.mp4"
+      ],
+      "mainDescription": {
+        "text": "Oakwood unites your data and accelerates your AI journey using Microsoft Fabric, Synapse, Power BI, and Azure AI. We help you turn insight into action so your organization can make better decisions and innovate faster."
+      },
+      "serviceAreas": {
+        "tagline": "WHERE WE EXCEL",
+        "title": "Service areas",
+        "description": "Leading Microsoft Azure Solution Partner for Cloud Consulting Services",
+        "backgroundImage": "https://oakwoodsys.com/wp-content/uploads/2025/12/s-daa-h.jpg",
+        "serviceAreas": [
+          {
+            "icon": "/assets/graph.png",
+            "badges": [
+              "Fabric",
+              "Synapse"
+            ],
+            "title": "Unified data estate",
+            "subtitle": "Modernize and consolidate into a governed lakehouse.",
+            "features": [
+              "Ingestion and orchestration with Data Factory or Synapse Pipelines",
+              "Medallion architecture on Fabric, OneLake, ADLS Gen2",
+              "Lineage, glossary, and access policies with Microsoft Purview"
+            ]
+          },
+          {
+            "icon": "/assets/graph.png",
+            "badges": [
+              "AML",
+              "OPENAI"
+            ],
+            "title": "AI and Machine Learning",
+            "subtitle": "From experiments to production ML and Generative AI.",
+            "features": [
+              "Distributed training, registries in Azure Machine Learning",
+              "RAG over enterprise data using embeddings and Azure Cognitive Search",
+              "Inference on AKS with monitoring, drift detection, governance"
+            ]
+          },
+          {
+            "icon": "/assets/graph.png",
+            "badges": [
+              "Extensibility"
+            ],
+            "title": "Copilot readiness and extensibility",
+            "subtitle": "Data, security, and plugins to realize Copilot value.",
+            "features": [
+              "Data preparation and access controls for Copilot for M365",
+              "Custom actions with Copilot Studio and Power Platform",
+              "Tenant governance and change management"
+            ]
+          },
+          {
+            "icon": "/assets/graph.png",
+            "badges": [
+              "POWER BI"
+            ],
+            "title": "Analytics and visualization",
+            "subtitle": "Trusted insights with governed semantics and BI at scale.",
+            "features": [
+              "Enterprise semantic models and composite models in Power BI",
+              "Certified datasets, workspace governance, usage analytics",
+              "Performance and cost optimization for large scale BI"
+            ]
+          }
+        ]
+      },
+      "solutionAccelerators": {
+        "title": "Solution accelerators",
+        "description": "Oakwood engineers use tested data and AI frameworks that unify your data estate, automate quality and governance, and prepare your organization for analytics and AI at scale.",
+        "backgroundImage": "https://oakwoodsys.com/wp-content/uploads/2025/12/s-data-and.ai-sa.png",
+        "cards": [
+          {
+            "icon": "/assets/graph.png",
+            "title": "Unified data estate framework",
+            "description": "Oakwood engineers unify fragmented data systems into a governed, scalable, AI-ready architecture."
+          },
+          {
+            "icon": "/assets/graph.png",
+            "title": "DataOps automation toolkit",
+            "description": "Our Team automates ingestion, transformation, testing, and governance to deliver faster, higher-quality data pipelines."
+          },
+          {
+            "icon": "/assets/graph.png",
+            "title": "Business Intelligence maturity framework",
+            "description": "We help your organization scale analytics adoption with a structured model for governance, enablement, and trusted insights."
+          },
+          {
+            "icon": "/assets/graph.png",
+            "title": "AI data playbook",
+            "description": "Our Team prepares your data for AI by automating cleansing, enrichment, and structuring to enable high-quality model training."
+          }
+        ]
+      },
+      "featuredCaseStudy": {
+        "featuredLabel": "FEATURED CASE STUDY",
+        "categoryTag": "Cloud & Infrastructure",
+        "title": "Seamless data center migration",
+        "description": "A major Texas-based data center needed a partner to migrate two on-premises domains and two Microsoft tenants into a single, unified domain. The goal was to streamline collaboration and communication by integrating tools like Teams, email, and OneDrive into a seamless experience.",
+        "imageSrc": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1920&q=80",
+        "primaryCta": {
+          "text": "Read more",
+          "link": "/resources/case-studies/seamless-data-center-migration"
+        },
+        "secondaryCta": {
+          "text": "View all case studies",
+          "link": "/resources/case-studies"
+        }
+      },
+      "trustedPartners": {
+        "title": "Trusted by Industry leaders",
+        "partners": [
+          {
+            "name": "Microsoft",
+            "logo": "/assets/logos/microsoft.png",
+            "alt": "Microsoft"
+          },
+          {
+            "name": "ARCO",
+            "logo": "/assets/logos/arco.png",
+            "alt": "ARCO Construction"
+          },
+          {
+            "name": "Applied Materials",
+            "logo": "/assets/logos/applied-materials.png",
+            "alt": "Applied Materials"
+          },
+          {
+            "name": "Clarios",
+            "logo": "/assets/logos/clarios.png",
+            "alt": "Clarios"
+          },
+          {
+            "name": "onsemi",
+            "logo": "/assets/logos/onsemi.png",
+            "alt": "onsemi"
+          },
+          {
+            "name": "Duke University",
+            "logo": "/assets/logos/duke-university.png",
+            "alt": "Duke University"
+          },
+          {
+            "name": "BJC HealthCare",
+            "logo": "/assets/logos/bjc-healthcare.png",
+            "alt": "BJC HealthCare"
+          }
+        ]
+      },
+      "whyOakwood": {
+        "tagline": "WHY OAKWOOD",
+        "title": "Unlock the full potential of your data",
+        "description": "Discover how Oakwood transforms your data into strategic advantage through trusted expertise, modern platforms, and cutting-edge AI capabilities.",
+        "imageSrc": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1920&q=80",
+        "features": [
+          {
+            "icon": "/assets/graph.png",
+            "title": "AI ready data platforms",
+            "description": "MLOps, vector search, and responsible AI controls built in."
+          },
+          {
+            "icon": "/assets/graph.png",
+            "title": "Microsoft centric expertise",
+            "description": "Fabric, Synapse, AML, OpenAI, Purview, Power BI with deep implementation experience."
+          },
+          {
+            "icon": "/assets/graph.png",
+            "title": "Unified strategy to execution",
+            "description": "Assess to Prove to Migrate to Manage with clear outcomes at each stage."
+          },
+          {
+            "icon": "/assets/graph.png",
+            "title": "Governed by design",
+            "description": "Identity, lineage, auditing, and policy enforcement without slowing delivery."
+          },
+          {
+            "icon": "/assets/graph.png",
+            "title": "Full Lifecycle partnership",
+            "description": "Roadmaps tied to measurable value like time to insight, cost, adoption, and reliability."
+          }
+        ]
+      },
+      "ctaSection": {
+        "headline": "Turn data into intelligent action",
+        "subheadline": "Unlock insights, accelerate AI adoption, and build a smarter business.",
+        "primaryCta": {
+          "text": "View all services",
+          "link": "/services"
+        },
+        "secondaryCta": {
+          "text": "Request a demo",
+          "link": "/contact-us"
+        }
+      },
+      "cta": {
+        "primary": {
+          "text": "Schedule a Consultation",
+          "link": "/contact-us",
+          "backgroundColor": "#1D69AC"
+        },
+        "secondary": {
+          "text": "View Resources",
+          "link": "/resources",
+          "borderColor": "#FFFFFF"
+        }
+      }
+    },
+    "cloud-and-infrastructure": {
+      "slug": "cloud-and-infrastructure",
+      "title": "Cloud & Infrastructure",
+      "description": "Modernize, secure, and optimize your cloud estate with Oakwood and Microsoft Azure.",
+      "backgroundImage": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1920&q=80",
+      "mainDescription": {
+        "text": "Transform your infrastructure with Microsoft Azure. We help you modernize, secure, and optimize your cloud estate to achieve scalability, reliability, and cost efficiency."
+      },
+      "cta": {
+        "primary": {
+          "text": "Schedule a Consultation",
+          "link": "/contact-us",
+          "backgroundColor": "#1D69AC"
+        },
+        "secondary": {
+          "text": "View Resources",
+          "link": "/resources",
+          "borderColor": "#FFFFFF"
+        }
+      }
+    },
+    "application-innovation": {
+      "slug": "application-innovation",
+      "title": "Application Innovation",
+      "description": "Ship faster, run safer, and scale efficiently with modern applications on Azure.",
+      "backgroundImage": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1920&q=80",
+      "mainDescription": {
+        "text": "Build and deploy modern applications on Azure that ship faster, run safer, and scale efficiently. We help you leverage cloud-native technologies to accelerate innovation and deliver exceptional user experiences."
+      },
+      "cta": {
+        "primary": {
+          "text": "Schedule a Consultation",
+          "link": "/contact-us",
+          "backgroundColor": "#1D69AC"
+        },
+        "secondary": {
+          "text": "View Resources",
+          "link": "/resources",
+          "borderColor": "#FFFFFF"
+        }
+      }
+    },
+    "high-performance-computing": {
+      "slug": "high-performance-computing",
+      "title": "High-Performance Computing (HPC)",
+      "description": "Scale simulations, AI training, and PLM workloads with the power of Azure HPC.",
+      "backgroundImage": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1920&q=80",
+      "mainDescription": {
+        "text": "Unlock the power of Azure HPC to scale your most demanding workloads. From complex simulations to AI training and PLM, we help you achieve maximum computational performance and efficiency."
+      },
+      "cta": {
+        "primary": {
+          "text": "Schedule a Consultation",
+          "link": "/contact-us",
+          "backgroundColor": "#1D69AC"
+        },
+        "secondary": {
+          "text": "View Resources",
+          "link": "/resources",
+          "borderColor": "#FFFFFF"
+        }
+      }
+    },
+    "modern-work": {
+      "slug": "modern-work",
+      "title": "Modern Work",
+      "description": "Boost productivity, protect data, and improve employee experience with Microsoft 365 and Copilot.",
+      "backgroundImage": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1920&q=80",
+      "mainDescription": {
+        "text": "Empower your workforce with Microsoft 365 and Copilot. We help you boost productivity, protect sensitive data, and create exceptional employee experiences that drive collaboration and innovation."
+      },
+      "cta": {
+        "primary": {
+          "text": "Schedule a Consultation",
+          "link": "/contact-us",
+          "backgroundColor": "#1D69AC"
+        },
+        "secondary": {
+          "text": "View Resources",
+          "link": "/resources",
+          "borderColor": "#FFFFFF"
+        }
+      }
+    },
+    "managed-services": {
+      "slug": "managed-services",
+      "title": "Managed Services",
+      "description": "Keep your Microsoft cloud running fast, secure, and cost effective with Oakwood.",
+      "backgroundImage": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1920&q=80",
+      "mainDescription": {
+        "text": "Keep your Microsoft cloud environment running at peak performance with Oakwood's managed services. We provide expert support, proactive monitoring, and cost optimization to ensure your cloud infrastructure stays fast, secure, and efficient."
+      },
+      "cta": {
+        "primary": {
+          "text": "Schedule a Consultation",
+          "link": "/contact-us",
+          "backgroundColor": "#1D69AC"
+        },
+        "secondary": {
+          "text": "View Resources",
+          "link": "/resources",
+          "borderColor": "#FFFFFF"
+        }
+      }
+    }
+  }
+}

@@ -2,3 +2,13 @@
   display: block;
   width: 100%;
 }
+
+/* Hide scrollbar for logo carousel */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
