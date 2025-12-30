@@ -7,10 +7,10 @@ Esta aplicación Angular con SSR está configurada para desplegarse en Netlify.
 Los siguientes archivos han sido creados/configurados:
 
 1. **netlify.toml** - Configuración principal de Netlify con el plugin `@netlify/angular-runtime`
-2. **netlify/functions/home-content.js** - Endpoint proxy para el contenido externo
+2. **src/server.ts** - Servidor compatible con Netlify que maneja SSR y el endpoint `/api/home-content`
 3. **package.json** - Incluye `@netlify/angular-runtime` como dependencia de desarrollo
 
-**Nota**: El plugin `@netlify/angular-runtime` maneja automáticamente el SSR de Angular, por lo que no necesitas configurar manualmente las funciones serverless para las rutas de Angular.
+**Nota**: El plugin `@netlify/angular-runtime` maneja automáticamente el SSR de Angular. El archivo `server.ts` está configurado en el formato compatible con Netlify e incluye el endpoint `/api/home-content` para el proxy de contenido externo.
 
 ## Pasos para desplegar
 
@@ -56,13 +56,13 @@ netlify deploy --prod
 - **Publish directory**: `dist/oaw/browser`
 - **Node version**: 20.x
 
-## Funciones Serverless
+## Endpoints
 
 ### `/api/home-content`
-Función serverless que actúa como proxy para obtener el contenido externo, evitando problemas de CORS.
+Endpoint proxy integrado en `server.ts` que obtiene el contenido externo, evitando problemas de CORS. Este endpoint está manejado directamente por el handler de Angular SSR.
 
 ### `/*` (Todas las rutas)
-El plugin `@netlify/angular-runtime` maneja automáticamente el SSR de Angular para todas las rutas de la aplicación. No necesitas configurar manualmente esta función.
+El plugin `@netlify/angular-runtime` maneja automáticamente el SSR de Angular para todas las rutas de la aplicación usando el handler definido en `server.ts`.
 
 ## Variables de Entorno
 
@@ -77,8 +77,9 @@ netlify env:set VARIABLE_NAME value
 - El build se ejecuta automáticamente con `npm run build`
 - Los archivos estáticos se sirven desde `dist/oaw/browser`
 - El SSR se maneja automáticamente por el plugin `@netlify/angular-runtime`
-- El endpoint `/api/home-content` está disponible como función serverless separada
+- El endpoint `/api/home-content` está integrado en `server.ts` y se maneja junto con el SSR
 - Asegúrate de instalar las dependencias: `npm install` (esto instalará `@netlify/angular-runtime`)
+- El archivo `server.ts` está configurado en el formato compatible con Netlify usando `AngularAppEngine` y `getContext` de `@netlify/angular-runtime`
 
 ## Solución de Problemas
 

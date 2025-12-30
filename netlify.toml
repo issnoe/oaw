@@ -9,10 +9,3 @@
 # This plugin automatically handles Angular SSR on Netlify
 [[plugins]]
   package = "@netlify/angular-runtime"
-
-# Redirect API calls to serverless functions (before Angular SSR)
-[[redirects]]
-  from = "/api/home-content"
-  to = "/.netlify/functions/home-content"
-  status = 200
-  force = false
