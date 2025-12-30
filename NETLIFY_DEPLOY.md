@@ -6,9 +6,11 @@ Esta aplicación Angular con SSR está configurada para desplegarse en Netlify.
 
 Los siguientes archivos han sido creados/configurados:
 
-1. **netlify.toml** - Configuración principal de Netlify
-2. **netlify/functions/server.js** - Función serverless para manejar SSR
-3. **netlify/functions/home-content.js** - Endpoint proxy para el contenido externo
+1. **netlify.toml** - Configuración principal de Netlify con el plugin `@netlify/angular-runtime`
+2. **netlify/functions/home-content.js** - Endpoint proxy para el contenido externo
+3. **package.json** - Incluye `@netlify/angular-runtime` como dependencia de desarrollo
+
+**Nota**: El plugin `@netlify/angular-runtime` maneja automáticamente el SSR de Angular, por lo que no necesitas configurar manualmente las funciones serverless para las rutas de Angular.
 
 ## Pasos para desplegar
 
@@ -60,7 +62,7 @@ netlify deploy --prod
 Función serverless que actúa como proxy para obtener el contenido externo, evitando problemas de CORS.
 
 ### `/*` (Todas las rutas)
-Función serverless que maneja el SSR de Angular para todas las rutas de la aplicación.
+El plugin `@netlify/angular-runtime` maneja automáticamente el SSR de Angular para todas las rutas de la aplicación. No necesitas configurar manualmente esta función.
 
 ## Variables de Entorno
 
@@ -74,8 +76,9 @@ netlify env:set VARIABLE_NAME value
 
 - El build se ejecuta automáticamente con `npm run build`
 - Los archivos estáticos se sirven desde `dist/oaw/browser`
-- El SSR se maneja mediante la función serverless en `netlify/functions/server.js`
+- El SSR se maneja automáticamente por el plugin `@netlify/angular-runtime`
 - El endpoint `/api/home-content` está disponible como función serverless separada
+- Asegúrate de instalar las dependencias: `npm install` (esto instalará `@netlify/angular-runtime`)
 
 ## Solución de Problemas
 

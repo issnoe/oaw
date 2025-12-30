@@ -5,16 +5,14 @@
 [build.environment]
   NODE_VERSION = "20"
 
-# Redirect API calls to serverless functions
+# Angular SSR plugin configuration
+# This plugin automatically handles Angular SSR on Netlify
+[[plugins]]
+  package = "@netlify/angular-runtime"
+
+# Redirect API calls to serverless functions (before Angular SSR)
 [[redirects]]
   from = "/api/home-content"
   to = "/.netlify/functions/home-content"
-  status = 200
-  force = false
-
-# Redirect all other routes to SSR function (except static assets)
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/server"
   status = 200
   force = false
